@@ -1,24 +1,30 @@
-import logo from './logo.svg';
-import './App.css';
+import {useState} from 'react';
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+
+import Layout from './paginas/Layout';
+import Home from './paginas/Home';
+import Categorias from './paginas/Categorias';
+import E404 from './paginas/E404';
+
+import AuthContext from "./AuthContext";
 
 function App() {
+  const [authToken, setAuthToken] = useState('');
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <AuthContext.Provider value={[authToken, setAuthToken]}>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Layout />}>
+
+            <Route index element={<Home />} />
+            <Route path="/categorias" element={<Categorias />} />
+
+            <Route path="*" element={<E404 />} />
+          </Route>
+        </Routes>
+      </BrowserRouter>
+    </AuthContext.Provider>
   );
 }
 
